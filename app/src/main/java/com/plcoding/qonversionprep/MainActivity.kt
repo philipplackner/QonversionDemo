@@ -36,61 +36,21 @@ class MainActivity : ComponentActivity() {
         setContent {
             QonversionPrepTheme {
                 val viewModel: QonversionViewModel = viewModel()
-                // A surface container using the 'background' color from the theme
-                Surface(color = MaterialTheme.colors.background) {
-                    LazyColumn(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(16.dp)
-                    ) {
-                        if (viewModel.hasPremiumPermission) {
-                            item {
-                                Text(
-                                    text = "Yaay, you got premium access!",
-                                    fontWeight = FontWeight.Bold,
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .background(Color.Green)
-                                        .padding(16.dp)
-                                )
-                            }
-                        }
-                        items(viewModel.offerings) { offering ->
-                            Text(
-                                text = offering.offeringID,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .clickable {
-                                        Qonversion.purchase(
-                                            this@MainActivity,
-                                            offering.products.firstOrNull() ?: return@clickable,
-                                            object : QonversionPermissionsCallback {
-                                                override fun onError(error: QonversionError) {
-                                                    Toast
-                                                        .makeText(
-                                                            this@MainActivity,
-                                                            "Purchase failed: ${error.description}, ${error.additionalMessage}",
-                                                            Toast.LENGTH_LONG
-                                                        )
-                                                        .show()
-                                                }
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(16.dp)
+                ) {
+                    items(viewModel.offerings) { offering ->
+                        Text(
+                            text = offering.offeringID,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable {
 
-                                                override fun onSuccess(permissions: Map<String, QPermission>) {
-                                                    Toast
-                                                        .makeText(
-                                                            this@MainActivity,
-                                                            "Purchase successful",
-                                                            Toast.LENGTH_LONG
-                                                        )
-                                                        .show()
-                                                    viewModel.updatePermissions()
-                                                }
-                                            }
-                                        )
-                                    }
-                                    .padding(16.dp)
-                            )
-                        }
+                                }
+                                .padding(16.dp)
+                        )
                     }
                 }
             }

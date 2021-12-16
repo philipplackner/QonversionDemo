@@ -23,37 +23,4 @@ class QonversionViewModel: ViewModel() {
     var hasPremiumPermission by mutableStateOf(false)
         private set
 
-    init {
-        updatePermissions()
-        loadOfferings()
-    }
-
-    private fun loadOfferings() {
-        Qonversion.offerings(
-            object : QonversionOfferingsCallback {
-                override fun onError(error: QonversionError) {
-                    // Handle error
-                    Log.d(TAG, "onError: ${error.description}")
-                }
-
-                override fun onSuccess(offerings: QOfferings) {
-                    this@QonversionViewModel.offerings = offerings.availableOfferings
-                }
-            }
-        )
-    }
-
-    fun updatePermissions() {
-        Qonversion.checkPermissions(object : QonversionPermissionsCallback {
-            override fun onError(error: QonversionError) {
-                Log.d(TAG, "onError: ${error.description}")
-            }
-
-            override fun onSuccess(permissions: Map<String, QPermission>) {
-                hasPremiumPermission = permissions["Premium"]?.isActive() == true
-                Log.d(TAG, "permissions: ${permissions.keys.toList()}")
-            }
-        })
-    }
-
 }
